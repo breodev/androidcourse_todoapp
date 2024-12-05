@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.ui.theme.ToDoAppTheme
 
@@ -43,17 +46,24 @@ fun DetailScreen(
 {
     val context = LocalContext.current
     val taskId = (context as? Activity)?.intent?.getStringExtra("TASK_ID") ?: "Unknown Task"
+
     LaunchedEffect(taskId) {
         taskViewModel.selectTask(taskId)
     }
 
     val selectedTask by taskViewModel.selectedTask.observeAsState()
 
-    Text(
-        modifier = modifier,
-        text = "Details for Task: ${selectedTask ?: "Loading..."}",
-        style = MaterialTheme.typography.labelLarge
-    )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Details for Task: ${selectedTask ?: "Loading..."}",
+            style = MaterialTheme.typography.labelLarge
+        )
+    }
 }
 
 
